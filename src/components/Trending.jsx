@@ -23,7 +23,7 @@ function Trending() {
       //setTrending(data.results);
       if(data.results.length > 0){
         setTrending((prevState) => [...prevState, ...data.results]);
-        setPage(nextPage + 1);
+        setPage((nextPage)=> nextPage + 1);
 
       }else{
         setHasMore(false)
