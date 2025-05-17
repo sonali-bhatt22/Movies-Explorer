@@ -19,7 +19,8 @@ function Trending() {
   const getTrending = async () => {
     try {
       const nextPage = page;
-      const { data } = await axios.get(`trending/${category}/${duration}?page=${nextPage}`);
+      const { data } = await axios.get(`https://api.themoviedb.org/3/trending/${category}/${duration}?api_key=${import.meta.env.VITE_TMDB_TOKEN}&page=${nextPage}`);
+
 
       //setTrending(data.results);
       if(data.results.length > 0){
