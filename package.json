@@ -10,7 +10,7 @@
    "postbuild": "copy dist\\index.html dist\\404.html",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && npm run postbuild",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
