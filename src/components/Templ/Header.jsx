@@ -4,9 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 const Header = ({data}) => {
    
-   console.log(pathname)
-     const {pathname} = useLocation();
-     const category = pathname.includes("movie") ? "movie" : "tv";
+
   
     //console.log(data)
   return (
@@ -23,7 +21,7 @@ const Header = ({data}) => {
          <i className="text-yellow-500 ri-album-fill ml-5 "></i>{" "}{data.media_type.toUpperCase()}
         </p>
         
-        <Link to={`${category}/trailer`} className='bg-[#6556CD] p-4 rounded-md text-lg font-semibold'>Watch Trailer</Link>
+        <Link className='bg-[#6556CD] p-4 rounded-md text-lg font-semibold'>Watch Trailer</Link>
 
       </div>
       
