@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 
 createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-   <BrowserRouter>
+   <BrowserRouter basename="/Movies-Explorer">
     <App/>
    </BrowserRouter>
   </Provider>
