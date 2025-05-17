@@ -19,7 +19,15 @@ function Trending() {
   const getTrending = async () => {
     try {
       const nextPage = page;
-      const { data } = await axios.get(`https://api.themoviedb.org/3/trending/${category}/${duration}?api_key=${import.meta.env.VITE_TMDB_TOKEN}&page=${nextPage}`);
+      const { data } = await axios.get(
+      `https://api.themoviedb.org/3/trending/${category}/${duration}`,
+      {
+        params: {
+          api_key: import.meta.env.VITE_TMDB_API_KEY, // or process.env if not using Vite
+          page: page,
+        },
+      }
+    );
 
 
       //setTrending(data.results);
