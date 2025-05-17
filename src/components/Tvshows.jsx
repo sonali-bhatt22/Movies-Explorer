@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../utils/axios'
 import Topnav from './Templ/Topnav'
@@ -16,7 +15,7 @@ const Tvshows = () => {
   const [hasMore, setHasMore] = useState(true);
   document.title = "tvShowsHub | tvShowss"
   
-  const getTvShows = async () => {
+  const getTvShows = useCallback(async () => {
     try {
       const { data } = await axios.get(`tv/${category}?page=${page}`);
       console.log(data)
@@ -33,23 +32,19 @@ const Tvshows = () => {
     } catch (error) {
       console.log("Error: ", error);
     }
-  };
+  }, [category, page]);
 
 
-  const refreshHandler = async()=>{
+  const refreshHandler = useCallback(async()=>{
     if(tvShows.length === 0){
-        getTvShows();
-    }else{
-        setPage(1)
-        setTvShows([])
-        getTvShows()
+        await getTvShows();
     }
-  }
+  }, [getTvShows, tvShows.length]);
 
   useEffect(() => {
     //gettvShows();
     refreshHandler();
-  }, [category]);
+  }, [refreshHandler]);
 
   return tvShows.length > 0 ? (
     <div className=" py-[1%] w-screen h-screen relative">

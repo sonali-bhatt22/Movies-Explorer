@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../utils/axios'
 import Topnav from './Templ/Topnav'
@@ -16,7 +15,7 @@ const Movie = () => {
   const [hasMore, setHasMore] = useState(true);
   document.title = "MovieHub | Movies"
   
-  const getMovie = async () => {
+  const getMovie = useCallback(async () => {
     try {
       const { data } = await axios.get(`movie/${category}?page=${page}`);
       console.log(data)
@@ -33,23 +32,22 @@ const Movie = () => {
     } catch (error) {
       console.log("Error: ", error);
     }
-  };
+  }, [page, category]);
 
-
-  const refreshHandler = async()=>{
+  const refreshHandler = useCallback(async () => {
     if(movie.length === 0){
-        getMovie();
+        await getMovie();
     }else{
         setPage(1)
         setMovie([])
-        getMovie()
+        await getMovie()
     }
-  }
+  }, [getMovie, movie.length]);
 
   useEffect(() => {
     //getmovie();
     refreshHandler();
-  }, [category]);
+  }, [refreshHandler]);
 
 
   return movie.length > 0 ? (

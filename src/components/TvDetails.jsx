@@ -1,7 +1,6 @@
-
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { aysncloadtv, removetv } from "../store/actions/tvAction";
+import { getTvDetails, removetv } from "../store/actions/tvAction";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import Loading from "./Templ/Loading";
 import { Link } from "react-router-dom";
@@ -14,11 +13,11 @@ const TvDetails = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation()
   useEffect(() => {
-    dispatch(aysncloadtv(id));
+    dispatch(getTvDetails(id));
     return () => {
       dispatch(removetv(id));
     };
-  }, [id]);
+  }, [dispatch, id]);
   return info ? (
     <div
       style={{

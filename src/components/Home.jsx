@@ -1,4 +1,4 @@
-import React, {useState, useEffect, use } from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import Sidebar from './Templ/Sidebar'
 import { Link } from 'react-router-dom'
 import Topnav from './Templ/Topnav'
@@ -13,42 +13,37 @@ function Home() {
     const [wallpaper, setWallpaper] = useState(null)
     const [trending, setTrending] = useState(null)
     const [category, setCategory] = useState("all")
+    const [duration] = useState("day")
 
     //getting wallpaper on home page
  
-    const getHeaderWallpaper = async () =>{
-      try {
-        const {data} = await axios.get(`trending/all/day`)
-        let randomdata = data.results[(Math.random()*data.results.length).toFixed()]
-        setWallpaper(randomdata);
-        
-      } catch (error) {
-        console.log("Error: ", error)
-      }
-    }
+    const getHeaderWallpaper = useCallback(async () => {
+        try {
+            const { data } = await axios.get('/trending/all/day');
+            const randomIndex = Math.floor(Math.random() * data.results.length);
+            setWallpaper(data.results[randomIndex]);
+        } catch (error) {
+            console.error("Error fetching wallpaper:", error.response?.data || error.message);
+        }
+    }, []);
     
     //getting trendings
 
-    const getTrending = async () =>{
-      try {
-        const {data} = await axios.get(`trending/${category}/day`)
-
-        
-        setTrending(data.results);
-        //console.log(data)
-        
-      } catch (error) {
-        console.log("Error: ", error)
-      }
-    }
+    const getTrending = useCallback(async () => {
+        try {
+            const { data } = await axios.get(`/trending/${category}/${duration}`);
+            setTrending(data.results);
+        } catch (error) {
+            console.error("Error fetching trending:", error.response?.data || error.message);
+        }
+    }, [category, duration]);
     
     //calling getHeaderWallpaper and getTrending
 
-    useEffect(()=>{
-      !wallpaper && getHeaderWallpaper();
-      getTrending();
-
-    }, [category])
+    useEffect(() => {
+        getTrending();
+        getHeaderWallpaper();
+    }, [getTrending, getHeaderWallpaper]);
 
     
   return wallpaper && trending ? (

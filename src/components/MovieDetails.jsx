@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { aysncloadmovie, removemovie } from "../store/actions/movieAction";
+import { getMovieDetails, removemovie } from "../store/actions/movieAction";
 import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
 import Loading from "./Templ/Loading";
 import { Link } from "react-router-dom";
@@ -14,11 +14,11 @@ const MovieDetails = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation()
   useEffect(() => {
-    dispatch(aysncloadmovie(id));
+    dispatch(getMovieDetails(id));
     return () => {
       dispatch(removemovie(id));
     };
-  }, [id]);
+  }, [dispatch, id]);
   return info ? (
     <div
       style={{

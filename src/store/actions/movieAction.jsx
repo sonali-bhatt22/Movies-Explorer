@@ -2,27 +2,12 @@ export { removemovie } from "../reducers/movieSlice";
 import axios from "../../utils/axios";
 import { loadmovie } from "../reducers/movieSlice";
 
-export const aysncloadmovie = (id) => async (dispatch, setState)=>{
-   try {
-    const detail = await axios.get(`/movie/${id}`)
-    const translations = await axios.get(`/movie/${id}/translations`)
-    const externalid = await axios.get(`/movie/${id}/external_ids`)
-    const recommendations = await axios.get(`/movie/${id}/recommendations`)
-    const similar = await axios.get(`/movie/${id}/similar`)
-    const videos = await axios.get(`/movie/${id}/videos`)
-    const watchproviders = await  axios.get(`/movie/${id}/watch/providers`)
-    let theultimatedetails = {
-        detail: detail.data,
-        translations: translations.data.translations.map(t => t.english_name),
-        externalid: externalid.data,
-        recommendations: recommendations.data.results,
-        similar: similar.data.results,
-        videos: videos.data.results.find(m => m.type === "Trailer"),
-        watchproviders: watchproviders.data.results.IN
+export const getMovieDetails = (id) => async (dispatch) => {
+    try {
+        const { data } = await axios.get(`/movie/${id}`);
+        dispatch(loadmovie(data));
+    } catch (error) {
+        console.log(error);
     }
-    dispatch(loadmovie(theultimatedetails))
-    console.log(theultimatedetails)
-   } catch (error) {
-    console.log("error: ", error)
-   }
-}
+};
+
