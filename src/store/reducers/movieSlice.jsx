@@ -1,24 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = {
-  info: null,
-}
-
-export const movieSlice = createSlice({
+const movieSlice = createSlice({
     name: 'movie',
-    initialState,
-    reducers: {
-      loadmovie: (state, action) =>{
-        state.info = action.payload
-      },
-      removemovie: (state, action) =>{
-        state.info = null;
-      },
-
+    initialState: {
+        info: null
     },
-  })
-  
-  // Action creators are generated for each case reducer function
-  export const { loadmovie, removemovie } = movieSlice.actions
-  
-  export default movieSlice.reducer
+    reducers: {
+        loadmovie: (state, action) => {
+            state.info = action.payload;
+        },
+        removemovie: (state) => {
+            state.info = null;
+        }
+    }
+})
+
+// Action creators are generated for each case reducer function
+export const { loadmovie, removemovie } = movieSlice.actions
+
+export default movieSlice.reducer

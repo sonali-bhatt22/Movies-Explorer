@@ -2,31 +2,39 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Cards = ({ data, title }) => {
-  console.log(title);
-  return (
-    <div className="flex flex-wrap  w-[full] bg-[#1F1E24] px-[3%]">
-      {data.map((c, i) => (
-        <Link to={`/${c.media_type || title}/details/${c.id}`}
-          className="w-[27vh] mr-[3%] mb-[2%] max-h-[50vh] relative rounded-2xl"
-          key={i}
-        >
-          <img
-            className="shadow-[8px_17px_38px_2px_rgba(0,0,0,.5) shadow-sm shadow-[#6556CD] w-[27vh] h-[40vh] object-cover "
-            src={`https://image.tmdb.org/t/p/original/${
-              c.poster_path || c.backdrop_path || c.profile_path
-            }`}
-            alt=""
-          />
+  if (!data || data.length === 0) {
+    return <div className="text-center text-white py-10">No results found</div>;
+  }
 
-          <h1 className="text-zinc-400 font-semibold mt-3 text-base">
-            {c.title || c.name || c.original_name || c.original_title}
-          </h1>
-          {c.vote_average ? (
-            <div className="text-white font-semibold bg-yellow-600 h-10 w-10 flex justify-center items-center rounded-full absolute bottom-[20%] right-[-10%]">
-              {(c.vote_average * 10).toFixed()} <sup>%</sup>
-            </div>
+  return (
+    <div className="flex flex-wrap justify-start gap-4 w-full">
+      {data.map((item, index) => (
+        <Link 
+          to={`/${item.media_type || title}/details/${item.id}`}
+          className="w-[200px] mb-6 relative rounded-lg overflow-hidden transition-transform hover:scale-105"
+          key={`${item.id}-${index}`}
+        >
+          {(item.poster_path || item.backdrop_path || item.profile_path) ? (
+            <img
+              className="w-full h-[300px] object-cover rounded-lg shadow-lg"
+              src={`https://image.tmdb.org/t/p/w500${item.poster_path || item.backdrop_path || item.profile_path}`}
+              alt={item.title || item.name || "Movie"}
+              loading="lazy"
+            />
           ) : (
-            []
+            <div className="w-full h-[300px] bg-gray-800 flex items-center justify-center rounded-lg shadow-lg">
+              <span className="text-gray-400 text-center p-4">No Image Available</span>
+            </div>
+          )}
+
+          <h1 className="text-zinc-200 font-semibold mt-2 text-base truncate px-1">
+            {item.title || item.name || item.original_name || item.original_title}
+          </h1>
+          
+          {item.vote_average && (
+            <div className="absolute top-2 right-2 text-white font-semibold bg-yellow-600 h-8 w-8 flex justify-center items-center rounded-full text-sm">
+              {Math.round(item.vote_average * 10)}<sup>%</sup>
+            </div>
           )}
         </Link>
       ))}

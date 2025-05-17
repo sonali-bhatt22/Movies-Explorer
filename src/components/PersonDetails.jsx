@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { aysncloadperson, removeperson } from "../store/actions/PersonAction";
+import { getPersonDetails, removeperson } from "../store/actions/personAction";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "./Templ/Loading";
 import { Link } from "react-router-dom";
@@ -16,11 +16,11 @@ const PersonDetails = () => {
   //console.log( info )
   const navigate = useNavigate();
   useEffect(() => {
-    dispatch(aysncloadperson(id));
+    dispatch(getPersonDetails(id));
     return () => {
       dispatch(removeperson());
     };
-  }, [id]);
+  }, [dispatch, id]);
   return info ? (
     <div
       style={{

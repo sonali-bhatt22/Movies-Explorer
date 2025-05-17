@@ -14,7 +14,7 @@ import Notfound from './components/Templ/Notfound'
 
 function App() {
   return (
-    <div className='bg-[#1F1E24] w-screen h-screen flex overflow-x-hidden'>
+    <div className='bg-[#1F1E24] min-h-screen w-full'>
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/trending' element={<Trending/>}/>
@@ -24,7 +24,6 @@ function App() {
           <Route path='/movie/details/:id/trailer' element={<Trailer/>}/>
         </Route>
         <Route path='/tv' element={<Tvshows/>}/>
-           
         <Route path='/tv/details/:id' element={<TvDetails/>}>
           <Route path='/tv/details/:id/trailer' element={<Trailer/>}/>
         </Route>
@@ -35,7 +34,6 @@ function App() {
         <Route path='movie/trailer' element={<Trailer/>}/>
         <Route path='tv/trailer' element={<Trailer/>}/>
       </Routes>
-
     </div>
   )
 }

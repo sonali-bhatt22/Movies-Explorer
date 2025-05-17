@@ -1,5 +1,4 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../utils/axios'
 import Topnav from './Templ/Topnav'
@@ -11,14 +10,14 @@ import Loading from './Templ/Loading'
 const People = () => {
   const navigate = useNavigate()
   const [people, setPeople] = useState([])
-  const[category, setCategory] = useState("popular")
+  const [category] = useState('popular')
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(true);
   document.title = "peopleHub | peoples"
   
-  const getPeople = async () => {
+  const getPeople = useCallback(async () => {
     try {
-      const { data } = await axios.get(`person/${category}?page=${page}`);
+      const { data } = await axios.get(`/person/${category}?page=${page}`);
       console.log(data)
       //setpeople(data.results);
       if(data.results.length > 0){
@@ -33,23 +32,21 @@ const People = () => {
     } catch (error) {
       console.log("Error: ", error);
     }
-  };
+  }, [category, page]);
 
-
-  const refreshHandler = async()=>{
-    if(people.length === 0){
-        getPeople();
-    }else{
+  const refreshHandler = useCallback(async () => {
+    if (people.length === 0) {
+        await getPeople();
+    } else {
         setPage(1)
         setPeople([])
-        getPeople()
+        await getPeople()
     }
-  }
+  }, [getPeople, people.length]);
 
   useEffect(() => {
-    //getpeople();s
     refreshHandler();
-  }, [category]);
+  }, [refreshHandler]);
   return people.length > 0 ? (
     <div className=" py-[1%] w-screen h-screen relative">
       <div className="w-full flex items-center justify-between mb-3 px-[3%] fixed top-0 bg-[#1F1E24] z-10">

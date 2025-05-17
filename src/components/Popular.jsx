@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from '../utils/axios'
 import Topnav from './Templ/Topnav'
@@ -14,48 +14,39 @@ const Popular = () => {
   const [hasMore, setHasMore] = useState(true);
   document.title = "MovieHub | Popular"
 
-  const getPopular = async () => {
+  const getPopular = useCallback(async () => {
     try {
-      const { data } = await axios.get(`/${category}/popular?page=${page}`);
-      console.log(data)
-      //setPopular(data.results);
-      if(data.results.length > 0){
+      const { data } = await axios.get(`/${category}/popular`, {
+        params: {
+          page
+        }
+      });
+      if (data.results.length > 0) {
         setPopular((prevState) => [...prevState, ...data.results]);
-        setPage(page + 1);
-
-      }else{
-        setHasMore(false)
+        setPage((prevPage) => prevPage + 1);
+      } else {
+        setHasMore(false);
       }
-      
-      console.log(data);
     } catch (error) {
-      console.log("Error: ", error);
+      console.error("Error fetching popular:", error.response?.data || error.message);
+      setHasMore(false);
     }
-  };
+  }, [category, page]);
 
-  // yaha humne ek function bnaya hai h jisme hum getPopular func ko call kr rhe hain
-  //agar popular ki length 0 hai tbhi getPopular ko call kre warna setPage(1) hi rehne de
-  // ye humne is liye bnaya hai jis se ek hi page br br na aaye refresh function
-
-
-  //agar popular me 0 elements hain to getpopular chlao nhi to agar category change hoti hai to
-  //setPopular ko khali kro or setPage(1) ko set kro or getPopular ko cll kro
-
-  const refreshHandler = async()=>{
-    if(popular.length === 0){
-        getPopular();
-    }else{
-        setPage(1)
-        setPopular([])
-        getPopular()
+  const refreshHandler = useCallback(async () => {
+    if (popular.length === 0) {
+      await getPopular();
+    } else {
+      setPage(1);
+      setPopular([]);
+      setHasMore(true);
+      await getPopular();
     }
-  }
+  }, [getPopular, popular.length]);
 
   useEffect(() => {
-    //getPopular();
     refreshHandler();
-  }, [category]);
-
+  }, [refreshHandler]);
 
   return popular.length > 0 ? (
     <div className=" py-[1%] w-screen h-screen relative">
