@@ -13,7 +13,7 @@ function Trending() {
   const [category, setCategory] = useState("all");
   const [duration, setDuration] = useState("day");
   const [trending, setTrending] = useState([]);
-  const [page, setPage] = useState(10);
+  const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true)
   document.title = "MovieHub | Trending"
   const getTrending = async () => {
