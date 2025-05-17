@@ -23,7 +23,7 @@ function Trending() {
       `https://api.themoviedb.org/3/trending/${category}/${duration}`,
       {
         params: {
-          api_key: import.meta.env.VITE_TMDB_API_KEY, // or process.env if not using Vite
+          api_key: import.meta.env.VITE_TMDB_TOKEN, // or process.env if not using Vite
           page: page,
         },
       }
