@@ -16,14 +16,14 @@ function Trending() {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true)
   document.title = "MovieHub | Trending"
-  const getTrending = async () => {
+  const getTrending = async (nextPage = page) => {
     try {
-      const { data } = await axios.get(`trending/${category}/${duration}?page=${page}`);
+      const { data } = await axios.get(`trending/${category}/${duration}?page=${nextPage}`);
 
       //setTrending(data.results);
       if(data.results.length > 0){
         setTrending((prevState) => [...prevState, ...data.results]);
-        setPage(page + 1);
+        setPage(nextPage + 1);
 
       }else{
         setHasMore(false)
@@ -41,6 +41,7 @@ function Trending() {
     }else{
         setPage(1)
         setTrending([])
+        setHasMore(true)
         getTrending()
     }
   }
