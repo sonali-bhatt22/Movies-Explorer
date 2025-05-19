@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { aysncloadperson, removeperson } from "../store/actions/PersonAction";
+import { aysncloadperson, removeperson } from "../store/actions/PersonAction.jsx";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "./Templ/Loading";
 import { Link } from "react-router-dom";
